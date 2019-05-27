@@ -1,4 +1,9 @@
-# HOW TO ?
+# CLI Tool : Working days
+Requires Node.JS 8+
+
+![GitHub Logo](/_assets/screenshot.jpg)
+
+## requirements
 Requires Node.JS 8+
 
 ## Clone

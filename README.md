@@ -1,12 +1,17 @@
-#HOW TO ?
+# HOW TO ?
 Requires Node.JS 8+
 
-##First time only
+## Clone
+```
+git clone https://github.com/Sunny-fr/working-days
+```
+
+## First time only
 ```
 $ npm install
 ```
 
-##Running
+## Running
 ```
 $ npm start
 ```
@@ -16,14 +21,14 @@ or
 $ node cli.js
 ```
 
-##Changing the month
+## Changing the month
 (ex for 2019 may)
 
 ```
 $ node cli.js 5 2019
 ```
 
-##Run it anywhere
+## Run it anywhere
 typing this turns it into cli classic command
 ```
 $ npm link

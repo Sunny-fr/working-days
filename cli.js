@@ -13,7 +13,6 @@ if (args.length < 2) {
 }
 
 
-
 const now = new Date()
 
 let year = args.length === 2 ? args[1] : now.getFullYear()
@@ -34,10 +33,12 @@ function printIt({
   bankHolidayDays = "bankHolidayDays"
 }) {
   const templateStr = `
+
     Il y a ${chalk.green.bold(workingDays + "  jours ouvres")}  pour le mois de ${chalk.bold(mois)} ${chalk.bold(year)}.
     (le mois compte ${chalk.blue(daysInMonth)} jours dont ${chalk.blue(bankHolidayDays)} feries).
 
     Source : ${chalk.gray(url)}
+
 `
   console.log(templateStr)
 }
@@ -55,26 +56,17 @@ const daysInMonthReg = /Jours dans le mois\ \:\ ([0-9]+)/
 
 function getWorkingDays(str) {
   const data = str.match(workingDaysReg)
-  if (data && data[1]) {
-    return data[1]
-  }
-  return null
+  return data && data[1] ? data[1] : null
 }
 
 function getBankHolidayDays(str) {
   const data = str.match(bankHoliDaysReg)
-  if (data && data[1]) {
-    return data[1]
-  }
-  return null
+  return data && data[1] ? data[1] : null
 }
 
 function getDaysInMonth(str) {
   const data = str.match(daysInMonthReg)
-  if (data && data[1]) {
-    return data[1]
-  }
-  return null
+  return data && data[1] ? data[1] : null
 }
 
 async function fetchSource() {

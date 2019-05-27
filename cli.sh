@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-const {init} = require('./cli.js')
+const {init} = require('./src.js')
 
 init()

@@ -1,5 +1,6 @@
 const request = require('request-promise')
 const chalk = require('chalk')
+const { htmlToText } = require('html-to-text');
 
 
 const MOIS = [null, "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
@@ -34,9 +35,9 @@ function template(str = "", p = {}) {
   }, str)
 }
 
-const workingDaysReg = /jours\ ouvrés\ \:\ ([0-9]{2})/
-const bankHoliDaysReg = /jours\ fériés\ \:\ ([0-9]+)/
-const daysInMonthReg = /Jours dans le mois\ \:\ ([0-9]+)/
+const workingDaysReg = /jours ouvrés \: ([0-9]{2})/i
+const bankHolidaysReg = /jours fériés \: ([0-9]+)/i
+const daysInMonthReg = /Jours dans le mois \: ([0-9]+)/i
 
 function getWorkingDays(str) {
   const data = str.match(workingDaysReg)
@@ -44,7 +45,7 @@ function getWorkingDays(str) {
 }
 
 function getBankHolidayDays(str) {
-  const data = str.match(bankHoliDaysReg)
+  const data = str.match(bankHolidaysReg)
   return data && data[1] ? data[1] : null
 }
 
@@ -57,7 +58,9 @@ async function fetchSource({ year, month }) {
   const url = template(paths.source, { year, month })
   return request({
     url,
-  }).then(response => {
+  })
+    .then(response => htmlToText(response).replace(/(\n|\r)/g, ' '))
+    .then(response => {
     return Promise.resolve({
       url,
       month,
@@ -69,6 +72,7 @@ async function fetchSource({ year, month }) {
   }).catch(e => {
     console.log(e)
     console.log("error")
+    return Promise.reject(e)
   })
 }
 
@@ -85,8 +89,9 @@ const init = async function () {
     console.log(chalk.gray("      Mai 2019 : \"node index.js 5 2019\" "))
     console.log("")
   }
-  const result = await fetchSource({ year, month })
+
   try {
+    const result = await fetchSource({ year, month })
     printIt({
       ...result,
       mois: MOIS[result.month]
